@@ -1,11 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import LoginPage from './LoginPage';
+import BikeRegistrationPage from './BikeRegistrationPage';
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <View style={styles.container}>
-      <Text>Aplicativo Pronto para Usar</Text>
-      <StatusBar style="auto" />
+      {!isLoggedIn ? (
+        <LoginPage onLogin={() => setIsLoggedIn(true)} />
+      ) : (
+        <BikeRegistrationPage />
+      )}
     </View>
   );
 }
@@ -14,7 +21,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
