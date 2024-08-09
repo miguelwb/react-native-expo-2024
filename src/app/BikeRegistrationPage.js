@@ -1,31 +1,38 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, Modal, Button, Image } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
 export default function BikeRegistrationPage() {
   const [bikes, setBikes] = useState([]);
-  const [bikeName, setBikeName] = useState('');
+  const [bikeBrand, setBikeBrand] = useState('');
+  const [bikeModel, setBikeModel] = useState('');
   const [bikeDescription, setBikeDescription] = useState('');
   const [bikeImage, setBikeImage] = useState('');
   const [bikeOwner, setBikeOwner] = useState('');
   const [bikeYear, setBikeYear] = useState('');
+  const [bikeCategory, setBikeCategory] = useState('mtb');
   const [selectedBike, setSelectedBike] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleAddBike = () => {
-    if (bikeName && bikeDescription && bikeImage && bikeOwner && bikeYear) {
+    if (bikeBrand && bikeModel && bikeDescription && bikeImage && bikeOwner && bikeYear) {
       setBikes([...bikes, {
         id: String(bikes.length + 1),
-        name: bikeName,
+        brand: bikeBrand,
+        model: bikeModel,
         description: bikeDescription,
         image: bikeImage,
         owner: bikeOwner,
-        year: bikeYear
+        year: bikeYear,
+        category: bikeCategory,
       }]);
-      setBikeName('');
+      setBikeBrand('');
+      setBikeModel('');
       setBikeDescription('');
       setBikeImage('');
       setBikeOwner('');
       setBikeYear('');
+      setBikeCategory('select');
     }
   };
 
@@ -40,9 +47,15 @@ export default function BikeRegistrationPage() {
       
       <TextInput
         style={styles.input}
-        placeholder="Nome da Bicicleta"
-        value={bikeName}
-        onChangeText={setBikeName}
+        placeholder="Marca da Bicicleta"
+        value={bikeBrand}
+        onChangeText={setBikeBrand}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Modelo da Bicicleta"
+        value={bikeModel}
+        onChangeText={setBikeModel}
       />
       <TextInput
         style={styles.input}
@@ -69,6 +82,21 @@ export default function BikeRegistrationPage() {
         onChangeText={setBikeYear}
         keyboardType="numeric"
       />
+      <Picker
+        selectedValue={bikeCategory}
+        style={styles.picker}
+        onValueChange={(itemValue) => setBikeCategory(itemValue)}
+      >
+        <Picker.Item label="Selecione a Categoria" value="select" />
+        <Picker.Item label="MTB" value="mtb" />
+        <Picker.Item label="Downhill" value="downhill" />
+        <Picker.Item label="Road" value="road" />
+        <Picker.Item label="Speed" value="speed" />
+        <Picker.Item label="Hybrid" value="hybrid" />
+        <Picker.Item label="Urban" value="urban" />
+        <Picker.Item label="BMX" value="bmx" />
+      </Picker>
+      
       <TouchableOpacity style={styles.button} onPress={handleAddBike}>
         <Text style={styles.buttonText}>Adicionar Bicicleta</Text>
       </TouchableOpacity>
@@ -85,12 +113,14 @@ export default function BikeRegistrationPage() {
             }}
           >
             <Image source={{ uri: bike.image }} style={styles.bikeImage} />
-            <Text>{bike.name}</Text>
+            <View style={styles.bikeInfo}>
+              <Text>{bike.brand} {bike.model}</Text>
+              <Text>Categoria: {bike.category}</Text>
+            </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
       
-      {/* Modal de Detalhes da Bicicleta */}
       {selectedBike && (
         <Modal
           visible={modalVisible}
@@ -101,8 +131,9 @@ export default function BikeRegistrationPage() {
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
               <Image source={{ uri: selectedBike.image }} style={styles.modalImage} />
-              <Text style={styles.modalTitle}>{selectedBike.name}</Text>
+              <Text style={styles.modalTitle}>{selectedBike.brand} {selectedBike.model}</Text>
               <Text>{selectedBike.description}</Text>
+              <Text>Categoria: {selectedBike.category}</Text>
               <Text>Proprietário: {selectedBike.owner}</Text>
               <Text>Ano de Fabricação: {selectedBike.year}</Text>
               <Button title="Fechar" onPress={handleCloseModal} />
@@ -145,6 +176,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  picker: {
+    height: 50,
+    width: '100%',
+    marginBottom: 16,
+  },
   scrollContainer: {
     width: '100%',
   },
@@ -161,6 +197,9 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginRight: 10,
+  },
+  bikeInfo: {
+    flex: 1,
   },
   modalContainer: {
     flex: 1,
