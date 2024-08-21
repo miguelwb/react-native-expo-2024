@@ -12,7 +12,6 @@ export function FontProvider ({ children }) {
         light: require("../../assets/fonts/Oswald-Light.ttf"),
         medium: require("../../assets/fonts/Oswald-Medium.ttf"),
         semiBold: require("../../assets/fonts/Oswald-SemiBold.ttf"),
-
     });
 
     if (!loaded && !error) {
