@@ -21,4 +21,4 @@ export async function initializeDatabase(database) {
     } catch (error) {
         console.log(error);
     }
-}]
+}

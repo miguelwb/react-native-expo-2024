@@ -6,12 +6,21 @@ import { useAuth } from '../hooks/Auth';
 export default function App() {
   const { signIn } = useAuth();
 
+  const handleEntrarSuper = async () => {
+    try {
+      await signIn({ email: "super@email.com", password: "A123456a!" });
+      router.replace("/(protected)");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Aplicativo Pronto Para Usar</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => signIn({ email: "super@gmail.com", password: "Super123!" })}
+        onPress={handleEntrarSuper}
       >
         <Text style={styles.buttonText}>Signin Super</Text>
       </TouchableOpacity>
