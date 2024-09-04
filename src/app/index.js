@@ -1,16 +1,26 @@
-import React from 'react';
-import { TouchableOpacity, StyleSheet, View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { TouchableOpacity, StyleSheet, View, Text, Button, BackHandler, TextInput, Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useAuth } from '../hooks/Auth';
+import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function App() {
   const { signIn } = useAuth();
+  const [email, setEmail] = useState("super@email.com");
+  const [password, setPassword] = useState("A123456a!");
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+
+  const tooglePasswordVisibility = () => {
+    setPasswordVisibility(!passwordVisibility);
+  }
 
   const handleEntrarSuper = async () => {
     try {
-      await signIn({ email: "super@email.com", password: "A123456a!" });
+      await signIn({ email, password});
       router.replace("/(protected)");
     } catch (error) {
+      Alert.alert("⚠️", "E-mail ou senha inválidos");
       console.log(error);
     }
   }
@@ -18,24 +28,29 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Aplicativo Pronto Para Usar</Text>
-      <TouchableOpacity
+      <View style={styles.inputbox}>
+        <Ionicons name='mail-open-outline' size={20} color='black' />
+        <TextInput style={styles.emailinput} placeholder='E-mail' value={email} onChangeText={setEmail} />
+      </View>
+      <View style={styles.inputbox}>
+        <Ionicons name='lock-closed-outline' size={20} color='black' />
+        <TextInput style={styles.emailinput} placeholder='Senha' value={password} onChangeText={setPassword} secureTextEntry={passwordVisibility} />
+        <Ionicons name={passwordVisibility ? "eye-off-outline" : "eye-outline"} size={20} color='black' onPress={tooglePasswordVisibility} />
+      </View>
+      
+      <Button 
+        title='Entrar'
         style={styles.button}
         onPress={handleEntrarSuper}
-      >
-        <Text style={styles.buttonText}>Signin Super</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      />
+      <Button 
+        title='Sobre'
         style={styles.button}
-        onPress={() => signIn({ email: "adm@gmail.com", password: "Adm123!" })}
-      >
-        <Text style={styles.buttonText}>Signin Adm</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+        onPress={() => router.push("/about")}/>
+      <Button 
+        title='Sair do Aplicativo' 
         style={styles.button}
-        onPress={() => signIn({ email: "user@gmail.com", password: "User123!" })}
-      >
-        <Text style={styles.buttonText}>Signin User</Text>
-      </TouchableOpacity>
+        onPress={() => BackHandler.exitApp()} />
       <StatusBar style='auto' />
     </View>
   );
@@ -65,4 +80,20 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
+  inputbox: {
+    flexDirection: 'row',
+    gap: 10,
+    marginHorizontal: 40,
+    marginVertical: 10,
+    alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 1,
+    padding: 8,
+    borderRadius: 20,
+  },
+  emailinput:{
+    flex: 1,
+    fontFamily: 'regular',
+    fontSize: 20,
+  }
 });
