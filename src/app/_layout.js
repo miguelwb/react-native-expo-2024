@@ -11,11 +11,16 @@ const StackLayout = () => {
   useEffect(() => {
     const inAuthGroup = segments[0] === "(protected)";
     
-    if(!user.autenticated && inAuthGroup) {
-      router.replace("/")
+    if(!user?.autenticated && inAuthGroup) {
+      if (router.canGoBack()) {
+        router.back();
+        return;
+      } else {
+        router.replace("/");
+      }
     } else {
       if(user.autenticated){
-        router.replace("/(protected)")
+        router.replace("(protected)")
       }
     }
   }, [user]);
