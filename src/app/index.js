@@ -19,7 +19,9 @@ export default function App() {
     try {
       await signIn({ email, password});
       // router.replace("(protected)");
+     console.log("Entrou");
     } catch (error) {
+      console.log("Erro");
       Alert.alert("⚠️", "E-mail ou senha inválidos");
       // console.log(error);
     }

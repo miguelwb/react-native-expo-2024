@@ -48,7 +48,6 @@ export function AuthProvider({ children }) {
 
     const signIn = async ({ email, password }) => {
         const response = await authUser({ email, password });
-
         if (!response) {
             setUser({ autenticated: false, user: null, role: null });
             return;
