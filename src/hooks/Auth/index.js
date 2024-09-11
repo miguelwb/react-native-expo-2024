@@ -42,9 +42,6 @@ export function AuthProvider({ children }) {
         loadStorageData();
     }, []);
 
-    useEffect(() => {
-        console.log('AuthProvider: ', user);
-    }, [user]);
 
     const signIn = async ({ email, password }) => {
         const response = await authUser({ email, password });
@@ -67,9 +64,6 @@ export function AuthProvider({ children }) {
         });
     };
 
-    useEffect(() => {
-        console.log('AuthProvider: ', user);
-    }, [user]);
 
     if (user?.autenticated === null) {
         return( 
