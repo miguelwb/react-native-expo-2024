@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, View, Text, Button, BackHandler, TextInput, Alert } from 'react-native';
+import { TouchableOpacity, StyleSheet, View, Text, BackHandler, TextInput, Alert, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useAuth } from '../hooks/Auth';
 import { router } from 'expo-router';
@@ -17,9 +17,9 @@ export default function App() {
 
   const handleEntrarSuper = async () => {
     try {
-      await signIn({ email, password});
+      await signIn({ email, password });
       // router.replace("(protected)");
-     console.log("Entrou");
+      console.log("Entrou");
     } catch (error) {
       console.log("Erro");
       Alert.alert("⚠️", "E-mail ou senha inválidos");
@@ -29,7 +29,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Aplicativo Pronto Para Usar</Text>
+      <Image source={require('../assets/PedalPulseLogo.png')} style={styles.logo} />
       <View style={styles.inputbox}>
         <Ionicons name='mail-open-outline' size={20} color='black' />
         <TextInput style={styles.emailinput} placeholder='E-mail' value={email} onChangeText={setEmail} />
@@ -39,20 +39,16 @@ export default function App() {
         <TextInput style={styles.emailinput} placeholder='Senha' value={password} onChangeText={setPassword} secureTextEntry={passwordVisibility} />
         <Ionicons name={passwordVisibility ? "eye-off-outline" : "eye-outline"} size={20} color='black' onPress={tooglePasswordVisibility} />
       </View>
-      
-      <Button 
-        title='Entrar'
-        style={styles.button}
-        onPress={handleEntrarSuper}
-      />
-      <Button 
-        title='Sobre'
-        style={styles.button}
-        onPress={() => router.push("/about")}/>
-      <Button 
-        title='Sair do Aplicativo' 
-        style={styles.button}
-        onPress={() => BackHandler.exitApp()} />
+
+      <TouchableOpacity style={styles.button} onPress={handleEntrarSuper}>
+        <Text style={styles.buttonText}>Entrar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => router.push("/about")}>
+        <Text style={styles.buttonText}>Sobre</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => BackHandler.exitApp()}>
+        <Text style={styles.buttonText}>Sair do Aplicativo</Text>
+      </TouchableOpacity>
       <StatusBar style='auto' />
     </View>
   );
@@ -64,6 +60,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
+  },
+  logo: {
+    width: 400,
+    height: 200,
+    marginBottom: 100,
   },
   title: {
     fontSize: 20,
@@ -71,16 +73,23 @@ const styles = StyleSheet.create({
     fontFamily: 'regular',
   },
   button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: '#B22222',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 15,
     marginBottom: 10,
-    width: '30%',
+    width: '80%',
     alignItems: 'center',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
+    fontFamily: 'bold',
   },
   inputbox: {
     flexDirection: 'row',
@@ -91,9 +100,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     padding: 8,
-    borderRadius: 20,
+    borderRadius: 15,
+    width: '80%',
   },
-  emailinput:{
+  emailinput: {
     flex: 1,
     fontFamily: 'regular',
     fontSize: 20,
