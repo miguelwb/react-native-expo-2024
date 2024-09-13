@@ -1,6 +1,6 @@
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, HoverEffect } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
-import { Button, Image, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { useAuth } from '../../hooks/Auth/index';
@@ -20,10 +20,10 @@ function CustomDrawerContent(props) {
         <Text style={{fontSize: 20, fontFamily: "bold", textAlign: "center",}}>{user?.user?.nome}</Text>
       </View>
       <DrawerContentScrollView {...props}>
-        <DrawerItemList {...props} />
+          <DrawerItemList {...props} />
       </DrawerContentScrollView>
       <TouchableOpacity onPress={() => signOut()} style={{justifyContent: "center", alignItems: "center", height: 50, margin: 10, backgroundColor: "#B22222", borderRadius: 5, }}>
-        <Text style={{color: "white", fontFamily: "bold"}}>Deslogar</Text>
+        <Text style={{color: "white", fontFamily: "bold"}} >Deslogar</Text>
       </TouchableOpacity>
     </View>
   );
@@ -31,10 +31,10 @@ function CustomDrawerContent(props) {
 
 const DrawerLayout = () => {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1}}>
       <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
-        <Drawer.Screen name='index' options={{ drawerLabel: "Principal", headerTitle: "Principal", drawerIcon: ()=> <Ionicons name='home-outline' size={20} color="black" /> }} />
-        <Drawer.Screen name='list' options={{ drawerLabel: "Listagem", headerTitle: "Listagem", drawerIcon: ()=> <Ionicons name='list-outline' size={20} color="black" /> }} />
+        <Drawer.Screen name='index' options={{ drawerLabel: "Principal", headerTitle: "Principal", drawerActiveBackgroundColor: "#e6e6e6", drawerActiveTintColor:"#000", drawerIcon: ()=> <Ionicons name='home-outline' size={20} color="black" /> }} />
+        <Drawer.Screen name='list' options={{ drawerLabel: "Listagem", headerTitle: "Listagem",drawerActiveBackgroundColor: "#e6e6e6", drawerActiveTintColor:"#000",drawerIcon: ()=> <Ionicons name='list-outline' size={20} color="black" /> }} />
       </Drawer>
     </GestureHandlerRootView>
   );
@@ -45,3 +45,10 @@ const DrawerLayout = () => {
 export default function Layout() {
   return DrawerLayout();
 }
+
+const styles = StyleSheet.create({
+  HoverEffect: {
+    color: "black",
+    textDecorationColor: "black",
+  }
+});
