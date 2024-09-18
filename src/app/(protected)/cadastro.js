@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, Modal, Button, Image } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, Modal, Button, Image, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 export default function BikeRegistrationPage() {
@@ -10,30 +10,34 @@ export default function BikeRegistrationPage() {
   const [bikeImage, setBikeImage] = useState('');
   const [bikeOwner, setBikeOwner] = useState('');
   const [bikeYear, setBikeYear] = useState('');
-  const [bikeCategory, setBikeCategory] = useState('mtb');
+  const [bikeCategory, setBikeCategory] = useState('select');
   const [selectedBike, setSelectedBike] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleAddBike = () => {
-    if (bikeBrand && bikeModel && bikeDescription && bikeImage && bikeOwner && bikeYear) {
-      setBikes([...bikes, {
-        id: String(bikes.length + 1),
-        brand: bikeBrand,
-        model: bikeModel,
-        description: bikeDescription,
-        image: bikeImage,
-        owner: bikeOwner,
-        year: bikeYear,
-        category: bikeCategory,
-      }]);
-      setBikeBrand('');
-      setBikeModel('');
-      setBikeDescription('');
-      setBikeImage('');
-      setBikeOwner('');
-      setBikeYear('');
-      setBikeCategory('select');
+    if (!bikeBrand || !bikeModel || !bikeDescription || !bikeImage || !bikeOwner || !bikeYear || bikeCategory === 'select') {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
+      return;
     }
+
+    setBikes([...bikes, {
+      id: String(bikes.length + 1),
+      brand: bikeBrand,
+      model: bikeModel,
+      description: bikeDescription,
+      image: bikeImage,
+      owner: bikeOwner,
+      year: bikeYear,
+      category: bikeCategory,
+    }]);
+    
+    setBikeBrand('');
+    setBikeModel('');
+    setBikeDescription('');
+    setBikeImage('');
+    setBikeOwner('');
+    setBikeYear('');
+    setBikeCategory('select');
   };
 
   const handleCloseModal = () => {
@@ -42,9 +46,9 @@ export default function BikeRegistrationPage() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>Cadastrar Bicicleta</Text>
-      
+
       <TextInput
         style={styles.input}
         placeholder="Marca da Bicicleta"
@@ -82,6 +86,7 @@ export default function BikeRegistrationPage() {
         onChangeText={setBikeYear}
         keyboardType="numeric"
       />
+
       <Picker
         selectedValue={bikeCategory}
         style={styles.picker}
@@ -96,13 +101,14 @@ export default function BikeRegistrationPage() {
         <Picker.Item label="Urban" value="urban" />
         <Picker.Item label="BMX" value="bmx" />
       </Picker>
-      
+
       <TouchableOpacity style={styles.button} onPress={handleAddBike}>
         <Text style={styles.buttonText}>Adicionar Bicicleta</Text>
       </TouchableOpacity>
-      
-      <Text style={styles.title}>Lista de Bicicletas</Text>
-      <ScrollView style={styles.scrollContainer}>
+
+      <Text style={styles.title2}>Lista de Bicicletas</Text>
+
+      <View style={styles.bikeList}>
         {bikes.map(bike => (
           <TouchableOpacity
             key={bike.id}
@@ -114,13 +120,13 @@ export default function BikeRegistrationPage() {
           >
             <Image source={{ uri: bike.image }} style={styles.bikeImage} />
             <View style={styles.bikeInfo}>
-              <Text>{bike.brand} {bike.model}</Text>
-              <Text>Categoria: {bike.category}</Text>
+              <Text style={styles.bikeText}>{bike.brand} {bike.model}</Text>
+              <Text style={styles.categoryText}>Categoria: {bike.category}</Text>
             </View>
           </TouchableOpacity>
         ))}
-      </ScrollView>
-      
+      </View>
+
       {selectedBike && (
         <Modal
           visible={modalVisible}
@@ -133,7 +139,7 @@ export default function BikeRegistrationPage() {
               <Image source={{ uri: selectedBike.image }} style={styles.modalImage} />
               <Text style={styles.modalTitle}>{selectedBike.brand} {selectedBike.model}</Text>
               <Text>{selectedBike.description}</Text>
-              <Text>Categoria: {selectedBike.category}</Text>
+              <Text style={styles.categoryText}>Categoria: {selectedBike.category}</Text>
               <Text>Proprietário: {selectedBike.owner}</Text>
               <Text>Ano de Fabricação: {selectedBike.year}</Text>
               <Button title="Fechar" onPress={handleCloseModal} />
@@ -141,71 +147,83 @@ export default function BikeRegistrationPage() {
           </View>
         </Modal>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
+    backgroundColor: '#f8f9fa',
+    padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#343a40',
+  },
+  title2: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginTop: 20,
+    textAlign: 'center',
+    color: '#343a40',
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
-    borderBottomWidth: 1,
-    marginBottom: 12,
-    width: '100%',
-    paddingHorizontal: 8,
+    height: 45,
+    borderColor: '#ced4da',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 15,
+    paddingHorizontal: 10,
+    backgroundColor: '#fff',
   },
   button: {
     backgroundColor: '#007BFF',
-    padding: 10,
+    padding: 12,
     borderRadius: 5,
-    marginBottom: 16,
   },
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
-  picker: {
-    height: 50,
-    width: '100%',
-    marginBottom: 16,
-  },
-  scrollContainer: {
-    width: '100%',
+  bikeList: {
+    marginTop: 20,
   },
   bikeItem: {
-    padding: 10,
+    padding: 15,
     marginVertical: 8,
-    marginHorizontal: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    elevation: 1,
   },
   bikeImage: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     marginRight: 10,
   },
   bikeInfo: {
     flex: 1,
   },
+  bikeText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  categoryText: {
+    color: '#6c757d',
+  },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
   modalContent: {
     width: '80%',
@@ -215,13 +233,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalImage: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
     marginBottom: 10,
+    borderRadius: 5,
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#343a40',
   },
 });

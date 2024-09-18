@@ -1,17 +1,19 @@
-import { Text, View } from "react-native";
+// List.js
+import React from 'react';
+import { StyleSheet, View, } from 'react-native';
 
-export default function Home() {
-    return(
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={styles.title}>List</Text>
-        </View>
-    )
+export default function List() {
+
+  return (
+    <View style={styles.container}>
+    </View>
+  );
 }
 
-const styles = {
-    title: {
-        fontSize: 20,
-        marginBottom: 20,
-        fontFamily: 'regular',
-    }
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f8f9fa',
+  },
+});

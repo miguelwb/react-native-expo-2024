@@ -29,12 +29,14 @@ function CustomDrawerContent(props) {
   );
 }
 
+
 const DrawerLayout = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1}}>
       <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
         <Drawer.Screen name='index' options={{ drawerLabel: "Principal", headerTitle: "Principal", drawerActiveBackgroundColor: "#e6e6e6", drawerActiveTintColor:"#000", drawerIcon: ()=> <Ionicons name='home-outline' size={20} color="black" /> }} />
-        <Drawer.Screen name='list' options={{ drawerLabel: "Listagem", headerTitle: "Listagem",drawerActiveBackgroundColor: "#e6e6e6", drawerActiveTintColor:"#000",drawerIcon: ()=> <Ionicons name='list-outline' size={20} color="black" /> }} />
+        <Drawer.Screen name='cadastro' options={{ drawerLabel: "Cadastro de Bicicletas", headerTitle: "Cadastro de Bicicletas",drawerActiveBackgroundColor: "#e6e6e6", drawerActiveTintColor:"#000",drawerIcon: ()=> <Ionicons name='add-circle-outline' size={20} color="black" /> }} />
+        <Drawer.Screen name='list' options={{ drawerLabel: "Lista de Bicicletas", headerTitle: "Lista de Bicicletas",drawerActiveBackgroundColor: "#e6e6e6", drawerActiveTintColor:"#000",drawerIcon: ()=> <Ionicons name='bicycle' size={20} color="black" /> }} />
       </Drawer>
     </GestureHandlerRootView>
   );
