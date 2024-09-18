@@ -1,6 +1,8 @@
 export async function initializeDatabase(database) {
-    try{
+    try {
         await database.execAsync(`
+            DROP TABLE IF EXISTS bicycles;
+            
             DROP TABLE IF EXISTS users;
 
             CREATE TABLE IF NOT EXISTS users (
@@ -11,6 +13,22 @@ export async function initializeDatabase(database) {
                 role TEXT NOT NULL DEFAULT 'USER',
                 created_at DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at DATE
+            );
+
+            CREATE TABLE IF NOT EXISTS bicycles (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                user_nome TEXT,
+                foto IMAGE,
+                valor_estimado REAL,
+                marca TEXT,
+                modelo TEXT,
+                data_fabricacao DATE,
+                descricao TEXT,
+                created_at DATE DEFAULT CURRENT_TIMESTAMP,
+                update_at DATE,
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (user_nome) REFERENCES users(nome)
             );
 
             INSERT OR REPLACE INTO users (nome, email, senha, role) VALUES ('Super','super@email.com','A123456a!','SUPER');
