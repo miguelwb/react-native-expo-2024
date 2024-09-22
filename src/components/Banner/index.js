@@ -32,17 +32,17 @@ export function Banner() {
                 onPageSelected={onPageSelected}
             >
                 <View key="1" style={styles.page}>
-                    <ImageBackground source={{ uri: "https://wallpapers.com/images/hd/brave-woman-riding-4k-mountain-bike-tga87nlaep2pe1xt.jpg" }} style={styles.img} imageStyle={{ borderRadius: 5 }}>
+                    <ImageBackground source={require('../../assets/img1.png')} style={styles.img} imageStyle={{ borderRadius: 5 }}>
                         <Text style={styles.text1}>Um pumptrack é uma pista com ondulações e curvas onde ciclistas usam a técnica de "pump" para ganhar velocidade e realizar manobras sem pedalar.</Text>
                     </ImageBackground>
                 </View>
                 <View key="2" style={styles.page}>
-                    <ImageBackground source={{ uri: "https://i.ytimg.com/vi/4_a-JF7ui2E/maxresdefault.jpg" }} style={styles.img} imageStyle={{ borderRadius: 5 }}>
+                    <ImageBackground source={require('../../assets/img2.png')} style={styles.img} imageStyle={{ borderRadius: 5 }}>
                         <Text style={styles.text2}>A bicicleta de downhill é feita para descer montanhas com alta velocidade e controle, oferecendo suspensões avançadas e estrutura robusta para enfrentar terrenos acidentados.</Text>
                     </ImageBackground>
                 </View>
                 <View key="3" style={styles.page}>
-                    <ImageBackground source={{ uri: "https://png.pngtree.com/thumb_back/fh260/background/20230615/pngtree-mountain-biker-riding-through-dirt-during-sunset-image_2908140.jpg" }} style={styles.img} imageStyle={{ borderRadius: 5 }}>
+                    <ImageBackground source={require('../../assets/img3.png')} style={styles.img} imageStyle={{ borderRadius: 5 }}>
                         <Text style={styles.text3}>A Mountain Bike (MTB) é projetada para enfrentar terrenos acidentados e trilhas desafiadoras, com suspensão robusta e pneus de alta tração.</Text>
                     </ImageBackground>
                 </View>
