@@ -4,6 +4,7 @@ import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-n
 import {Ionicons} from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { useAuth } from '../../hooks/Auth/index';
+import { router } from 'expo-router';
 
 function CustomDrawerContent(props) {
   const { user, signOut } = useAuth();
@@ -22,7 +23,7 @@ function CustomDrawerContent(props) {
       <DrawerContentScrollView {...props}>
           <DrawerItemList {...props} />
       </DrawerContentScrollView>
-      <TouchableOpacity onPress={() => signOut()} style={{justifyContent: "center", alignItems: "center", height: 50, margin: 10, backgroundColor: "#B22222", borderRadius: 5, }}>
+      <TouchableOpacity onPress={() => router.replace("/")} style={{justifyContent: "center", alignItems: "center", height: 50, margin: 10, backgroundColor: "#B22222", borderRadius: 5, }}>
         <Text style={{color: "white", fontFamily: "bold"}} >Deslogar</Text>
       </TouchableOpacity>
     </View>
