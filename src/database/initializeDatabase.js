@@ -31,6 +31,8 @@ export async function initializeDatabase(database) {
                 FOREIGN KEY (user_nome) REFERENCES users(nome)
             );
 
+            CREATE INDEX IF NOT EXISTS idx_users_nome ON bicycles (nome);
+
             INSERT OR REPLACE INTO users (nome, email, senha, role) VALUES ('Super','super@email.com','A123456a!','SUPER');
             INSERT OR REPLACE INTO users (nome, email, senha, role) VALUES ('Admin','admin@email.com','A123456a!','ADMIN');
             INSERT OR REPLACE INTO users (nome, email, senha, role) VALUES ('User','user@email.com','A123456a!','USER');

@@ -19,7 +19,7 @@ export default function App() {
   const handleEntrarSuper = async () => {
     try {
       await signIn({ email, password });
-      // router.replace("(protected)");
+      router.replace("(protected)");
     } catch (error) {
       Alert.alert("⚠️", "E-mail ou senha inválidos");
       // console.log(error);

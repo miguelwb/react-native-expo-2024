@@ -7,6 +7,8 @@ import * as ImagePicker from 'expo-image-picker';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { z } from "zod";
 import { useAuth } from "../../hooks/Auth/index"
+import {useBicyclesDatabase} from "../../database/useBicyclesDatabase"
+import { useUsersDatabase } from "../../database/useUsersDatabase"
 
 export default function Cadastro() {
   const [valor, setValor] = useState("R$ 0,00");
@@ -29,8 +31,12 @@ export default function Cadastro() {
   const [modelo, setModelo] = useState("");
   const [marca, setMarca] = useState("");
   const [id, setId] = useState(0);
-  const [image, setImage] = useState(null);
+  const [nome, setNome] = useState("");
   const { user } = useAuth();
+  const { createBicycles } = useBicyclesDatabase();
+  const { getAllUsers } = useUsersDatabase();  
+  const [image, setImage] = useState(null);
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -51,7 +57,8 @@ export default function Cadastro() {
   }, []);
 
   const cadastroSchema = z.object({
-    user_nome: z.number(),
+    user_id: z.number(),
+    user_nome: z.string(),
     marca: z.string(),
     modelo: z.string(),
     data_fabricacao: z.string(),
@@ -74,7 +81,8 @@ export default function Cadastro() {
 
   const handleSubmit = async () => {
     const cadastro = {
-      user_nome: Number(user.user.id),
+      user_id: 1,
+      user_nome: nome,
       valor_estimado: convertValue(valor),
       marca,
       modelo,
@@ -83,7 +91,9 @@ export default function Cadastro() {
     };
     try {
       const result = await cadastroSchema.parseAsync(cadastro);
+      const { insertedID } = await createBicycles(cadastro);
       console.log(result);
+      console.log(insertedID);
     } catch (error) {
       console.log(error);
     }
@@ -148,6 +158,15 @@ export default function Cadastro() {
           />
         </View>
         <View style={styles.inputView}>
+          <Ionicons name="body-outline" size={20} color="black" />
+          <TextInput
+            placeholder="Nome do Proprietário"
+            value={nome}
+            onChangeText={(newValue) => setNome(newValue)}
+            style={styles.inputValor}
+          />
+        </View>
+        <View style={styles.inputView}>
           <Ionicons name="image-outline" size={20} color="black" />
           <TouchableOpacity onPress={pickImage}>
             <Text style={styles.inputImage}>Selecionar imagem</Text>
@@ -166,8 +185,8 @@ export default function Cadastro() {
           </Picker>
         </View>
         <View style={styles.inputButton}>
-          <TouchableOpacity style={styles.contentButtons}>
-            <Text style={styles.buttonText} onPress={handleSubmit}>Salvar</Text>
+          <TouchableOpacity style={styles.contentButtons} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Salvar</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.contentButtons} onPress={() => router.back()}>
             <Text style={styles.buttonText}>Cancelar</Text>
